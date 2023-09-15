@@ -1,0 +1,72 @@
+{
+    "name": "apsonex/filament-image",
+    "description": "This is my package filament-image",
+    "keywords": [
+        "apsonex",
+        "laravel",
+        "filament-image"
+    ],
+    "homepage": "https://github.com/apsonex/filament-image",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gurinder Chauhan",
+            "email": "dev@apsonex.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "apsonex/filament-asset-routing": "^1.0",
+        "enshrined/svg-sanitize": "^0.16.0",
+        "filament/filament": "^3.0",
+        "illuminate/contracts": "^9.0|^10.0",
+        "intervention/image": "^2.7",
+        "spatie/laravel-package-tools": "^1.16",
+        "spatie/temporary-directory": "^2.1"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^7.8",
+        "orchestra/testbench": "^8.10",
+        "pestphp/pest": "^2.18",
+        "pestphp/pest-plugin-arch": "^2.3",
+        "pestphp/pest-plugin-laravel": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Apsonex\\FilamentImage\\": "src",
+            "Apsonex\\FilamentImage\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Apsonex\\FilamentImage\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Apsonex\\FilamentImage\\FilamentImageServiceProvider"
+            ],
+            "aliases": {
+                "FilamentImage": "Apsonex\\FilamentImage\\Facades\\FilamentImage"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
