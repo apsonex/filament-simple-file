@@ -109,6 +109,6 @@ trait HasDisk
         }
 
 
-        return $this->getDisk()->url('/');
+        return explode('/placeholder', $this->getDisk()->url('/placeholder'))[0] . '/';
     }
 }
