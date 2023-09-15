@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Validation\ValidationException;
-use Apsonex\FilamentSimpleFile\Form\Components\Image;
+use Apsonex\FilamentSimpleFile\Form\Components\File;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 trait FileRules
@@ -23,7 +23,7 @@ trait FileRules
     {
         $this->acceptedFileTypes = $types;
 
-        $this->rule(static function (Image $component) {
+        $this->rule(static function (File $component) {
             $types = implode(',', ($component->getAcceptedFileTypes() ?? []));
 
             return "mimetypes:{$types}";
@@ -53,7 +53,7 @@ trait FileRules
     {
         $this->maxSize = $size;
 
-        $this->rule(static function (Image $component): string {
+        $this->rule(static function (File $component): string {
             $size = $component->getMaxSize();
 
             return "max:{$size}";
@@ -71,7 +71,7 @@ trait FileRules
     {
         $this->minSize = $size;
 
-        $this->rule(static function (Image $component): string {
+        $this->rule(static function (File $component): string {
             $size = $component->getMinSize();
 
             return "min:{$size}";

@@ -9,7 +9,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Apsonex\FilamentSimpleFile\Form\Components\Concerns\CanMoveFiles;
 use Apsonex\FilamentSimpleFile\Form\Components\Concerns\FileRules;
 
-class Image extends Field
+class File extends Field
 {
     use HasDisk;
     use FileRules;

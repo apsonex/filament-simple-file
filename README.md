@@ -4,7 +4,7 @@
 
  ```php
 
-use \Apsonex\FilamentImage\Form\Components\Image
+use \Apsonex\FilamentSimpleFile\Form\Components\Image
 
 Image::make('column')
     ->disk('s3')
