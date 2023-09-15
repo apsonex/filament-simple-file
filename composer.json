@@ -34,13 +34,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Apsonex\\FilamentImage\\": "src",
-            "Apsonex\\FilamentImage\\Database\\Factories\\": "database/factories"
+            "Apsonex\\FilamentSimpleFile\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Apsonex\\FilamentImage\\Tests\\": "tests"
+            "Apsonex\\FilamentSimpleFile\\Tests\\": "tests"
         }
     },
     "scripts": {

@@ -17,7 +17,7 @@ File::make('column')
  ```
 
  ### Delete previously stored file
-To delete previously stored file, use `deleteOldFile(true)`. Make sure Form component implement `getRecord()` method.
+To delete previously stored file, use `deleteOldFile(true)`. Make sure Form component implement `getRecord()` method and must return model instance.
  ```php
  File::make('column')
     ->disk('s3')
