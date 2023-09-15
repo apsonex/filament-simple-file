@@ -15,7 +15,7 @@ class File extends Field
     use FileRules;
     use CanMoveFiles;
 
-    protected string $view = "filament-simple-file::components.image";
+    protected string $view = "filament-simple-file::components.file";
 
     protected bool|null $profilePhoto = false;
 
@@ -23,7 +23,7 @@ class File extends Field
     {
         parent::setUp();
 
-        $this->afterStateUpdated(function (Image $component, null|string|TemporaryUploadedFile $state) {
+        $this->afterStateUpdated(function (File $component, null|string|TemporaryUploadedFile $state) {
             if(blank($state)) {
                 return;
             }

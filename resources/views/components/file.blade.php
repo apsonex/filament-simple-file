@@ -19,7 +19,7 @@
         ]"
         ax-load
         ax-load-src="{{ filament_asset_route('resources/dist/plugin.js', FilamentSimpleFileServiceProvider::class) }}"
-        x-data="apsonexImageField(
+        x-data="apsonexSimpleFileField(
             $wire.{{ $applyStateBindingModifiers("entangle('{$getStatePath()}')") }}, {
                 $wire: $wire,
                 disabled: {{ $isDisabled ? 'true' : 'false' }},
@@ -31,7 +31,6 @@
                 minSize: @js(($size = $getMinSize()) ? "'{$size} KB'" : null),
             }
         )"
-        x-on:apsonex-filament-image-field-uploaded.window="fileUploaded"
     >
         <div
             class="relative flex flex-col flex-wrap"
@@ -82,7 +81,7 @@
                 x-transition
             >
                 <div class="flex flex-col items-center justify-center">
-                    <span class="flex items-center justify-center inline-block"><x-filament-image::spinner
+                    <span class="flex items-center justify-center inline-block"><x-filament-simple-file::spinner
                             class="w-6 h-6"
                         /></span>
                 </div>

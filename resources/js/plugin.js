@@ -14,7 +14,7 @@ function randomName() {
     );
 }
 
-export default function apsonexImageField(state, args) {
+export default function apsonexSimpleFileField(state, args) {
     return {
         id: null,
         state: null,
