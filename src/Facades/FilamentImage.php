@@ -1,16 +1,16 @@
 <?php
 
-namespace Apsonex\FilamentImage\Facades;
+namespace Apsonex\FilamentSimpleFile\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Apsonex\FilamentImage\FilamentImage
+ * @see \Apsonex\FilamentSimpleFile\FilamentSimpleFile
  */
-class FilamentImage extends Facade
+class FilamentSimpleFile extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Apsonex\FilamentImage\FilamentImage::class;
+        return \Apsonex\FilamentSimpleFile\FilamentSimpleFile::class;
     }
 }

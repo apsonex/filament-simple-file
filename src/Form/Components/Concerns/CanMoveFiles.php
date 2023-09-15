@@ -1,11 +1,11 @@
 <?php
 
-namespace Apsonex\FilamentImage\Form\Components\Concerns;
+namespace Apsonex\FilamentSimpleFile\Form\Components\Concerns;
 
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Apsonex\FilamentImage\SVG;
+use Apsonex\FilamentSimpleFile\SVG;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\File as HttpFile;

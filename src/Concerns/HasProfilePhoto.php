@@ -1,6 +1,6 @@
 <?php
 
-namespace Apsonex\FilamentImage\Concerns;
+namespace Apsonex\FilamentSimpleFile\Concerns;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Casts\Attribute;

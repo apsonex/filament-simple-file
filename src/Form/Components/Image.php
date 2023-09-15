@@ -1,13 +1,13 @@
 <?php
 
-namespace Apsonex\FilamentImage\Form\Components;
+namespace Apsonex\FilamentSimpleFile\Form\Components;
 
 use Closure;
 use Filament\Forms\Components\Field;
-use Apsonex\FilamentImage\Form\Components\Concerns\HasDisk;
+use Apsonex\FilamentSimpleFile\Form\Components\Concerns\HasDisk;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Apsonex\FilamentImage\Form\Components\Concerns\CanMoveFiles;
-use Apsonex\FilamentImage\Form\Components\Concerns\FileRules;
+use Apsonex\FilamentSimpleFile\Form\Components\Concerns\CanMoveFiles;
+use Apsonex\FilamentSimpleFile\Form\Components\Concerns\FileRules;
 
 class Image extends Field
 {
@@ -15,7 +15,7 @@ class Image extends Field
     use FileRules;
     use CanMoveFiles;
 
-    protected string $view = "filament-image::components.image";
+    protected string $view = "filament-simple-file::components.image";
 
     protected bool|null $profilePhoto = false;
 

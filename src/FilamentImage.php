@@ -1,8 +1,8 @@
 <?php
 
-namespace Apsonex\FilamentImage;
+namespace Apsonex\FilamentSimpleFile;
 
-class FilamentImage
+class FilamentSimpleFile
 {
-    // 
+    //
 }

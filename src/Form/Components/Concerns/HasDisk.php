@@ -1,6 +1,6 @@
 <?php
 
-namespace Apsonex\FilamentImage\Form\Components\Concerns;
+namespace Apsonex\FilamentSimpleFile\Form\Components\Concerns;
 
 use Closure;
 use Illuminate\Support\Facades\Storage;

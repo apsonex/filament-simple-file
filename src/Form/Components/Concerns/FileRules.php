@@ -1,12 +1,12 @@
 <?php
 
-namespace Apsonex\FilamentImage\Form\Components\Concerns;
+namespace Apsonex\FilamentSimpleFile\Form\Components\Concerns;
 
 use Closure;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Validation\ValidationException;
-use Apsonex\FilamentImage\Form\Components\Image;
+use Apsonex\FilamentSimpleFile\Form\Components\Image;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 trait FileRules

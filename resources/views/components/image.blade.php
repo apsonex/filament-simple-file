@@ -1,5 +1,5 @@
 @php
-    use Apsonex\FilamentImage\FilamentImageServiceProvider;
+    use \Apsonex\FilamentSimpleFile\FilamentSimpleFileServiceProvider;
     $id = $getId();
     $isConcealed = $isConcealed();
     $isDisabled = $isDisabled();
@@ -15,10 +15,10 @@
         x-ignore
         class=""
         x-load-css="[
-            @js(filament_asset_route('resources/dist/plugin.css', FilamentImageServiceProvider::class)),
+            @js(filament_asset_route('resources/dist/plugin.css', FilamentSimpleFileServiceProvider::class)),
         ]"
         ax-load
-        ax-load-src="{{ filament_asset_route('resources/dist/plugin.js', FilamentImageServiceProvider::class) }}"
+        ax-load-src="{{ filament_asset_route('resources/dist/plugin.js', FilamentSimpleFileServiceProvider::class) }}"
         x-data="apsonexImageField(
             $wire.{{ $applyStateBindingModifiers("entangle('{$getStatePath()}')") }}, {
                 $wire: $wire,
@@ -34,7 +34,7 @@
         x-on:apsonex-filament-image-field-uploaded.window="fileUploaded"
     >
         <div
-            class="flex flex-col flex-wrap relative"
+            class="relative flex flex-col flex-wrap"
             x-cloak
         >
             <template x-if="img.src">
@@ -43,13 +43,13 @@
                         class="w-full flex aspect-square relative border shadow rounded-lg overflow-hidden min-h-[100px]">
                         <img
                             x-bind:src="imgSrc"
-                            class="object-contain max-w-full w-full h-auto"
+                            class="object-contain w-full h-auto max-w-full"
                         />
                     </div>
                     <button
                         @click.prevent="deleteFile(img.key)"
                         type="button"
-                        class="absolute top-0 mt-2 mr-2 right-0 text-xs font-semibold text-red-500 w-8 h-8 p-1 border border-gray-200 rounded-full z-10 bg-white shadow hover:text-primary-500 hover:bg-gray-200"
+                        class="absolute top-0 right-0 z-10 w-8 h-8 p-1 mt-2 mr-2 text-xs font-semibold text-red-500 bg-white border border-gray-200 rounded-full shadow hover:text-primary-500 hover:bg-gray-200"
                     ><x-heroicon-o-trash class="w-full h-full" /></button>
                 </div>
             </template>
@@ -63,7 +63,7 @@
                             $refs.fileUploadInput.value = null
                             $refs.fileUploadInput.click();
                         "
-                        class="px-4 py-2 text-sm text-primary-500 border rounded-lg"
+                        class="px-4 py-2 text-sm border rounded-lg text-primary-500"
                     >Upload</button>
                     <input
                         type="file"
@@ -77,22 +77,22 @@
             </template>
 
             <div
-                class="absolute inset-0 bg-white/80 flex flex-col justify-center items-center"
+                class="absolute inset-0 flex flex-col items-center justify-center bg-white/80"
                 x-show="processing"
                 x-transition
             >
-                <div class="flex flex-col justify-center items-center">
-                    <span class="inline-block flex justify-center items-center"><x-filament-image::spinner
+                <div class="flex flex-col items-center justify-center">
+                    <span class="flex items-center justify-center inline-block"><x-filament-image::spinner
                             class="w-6 h-6"
                         /></span>
                 </div>
 
                 <div
-                    class="absolute block w-full h-1 bg-gray-400 z-0 top-0 left-0"
+                    class="absolute top-0 left-0 z-0 block w-full h-1 bg-gray-400"
                     x-show="progress > 0"
                 >
                     <span
-                        class="absolute block w-full z-10 left-0 h-1 bg-primary-500"
+                        class="absolute left-0 z-10 block w-full h-1 bg-primary-500"
                         x-bind:style="{ width: progress + '%' }"
                     ></span>
                 </div>

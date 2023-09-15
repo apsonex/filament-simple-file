@@ -1,12 +1,12 @@
 {
-    "name": "apsonex/filament-image",
-    "description": "This is my package filament-image",
+    "name": "apsonex/filament-simple-file",
+    "description": "Filement Simepl File Uploader",
     "keywords": [
         "apsonex",
         "laravel",
-        "filament-image"
+        "filament-simple-file"
     ],
-    "homepage": "https://github.com/apsonex/filament-image",
+    "homepage": "https://github.com/apsonex/filament-simple-file",
     "license": "MIT",
     "authors": [
         {
@@ -60,10 +60,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Apsonex\\FilamentImage\\FilamentImageServiceProvider"
+                "Apsonex\\FilamentSimpleFile\\FilamentSimpleFileServiceProvider"
             ],
             "aliases": {
-                "FilamentImage": "Apsonex\\FilamentImage\\Facades\\FilamentImage"
+                "FilamentSimpleFile": "Apsonex\\FilamentSimpleFile\\Facades\\FilamentSimpleFile"
             }
         }
     },

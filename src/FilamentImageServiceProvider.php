@@ -1,6 +1,6 @@
 <?php
 
-namespace Apsonex\FilamentImage;
+namespace Apsonex\FilamentSimpleFile;
 
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Css;
@@ -8,10 +8,10 @@ use Filament\Support\Facades\FilamentAsset;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FilamentImageServiceProvider extends PackageServiceProvider
+class FilamentSimpleFileServiceProvider extends PackageServiceProvider
 {
 
-    const PACKAGE_NAME = "apsonex/filament-image";
+    const PACKAGE_NAME = "apsonex/filament-simple-file";
 
     /**
      * @url https://github.com/spatie/laravel-package-tools
@@ -21,7 +21,7 @@ class FilamentImageServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('filament-image')
+            ->name('filament-simple-file')
             ->hasConfigFile()
             ->hasViews();
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Apsonex\FilamentImage;
+namespace Apsonex\FilamentSimpleFile;
 
 use Illuminate\Support\Str;
 use enshrined\svgSanitize\Sanitizer;
