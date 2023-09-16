@@ -73,7 +73,7 @@ trait HasDisk
             return $this->evaluate($this->disk);
         }
 
-        return Storage::disk($this->getDiskName());
+        return Storage::disk($this->getDiskName() ?: config('filesystems.default'));
     }
 
     public function private(): static

@@ -58,11 +58,13 @@ trait CanMoveFiles
             );
             $temporaryDirectory->delete();
         } else {
-            $file->{$method}(
-                $this->getDirectory(),
-                "{$basename}.{$extension}",
-                $this->getDiskName(),
-            );
+            $stream = $file->readStream();
+            $path = $this->getDirectory() . '/' . "{$basename}.{$extension}";
+            $this->getDisk()->writeStream($path, $stream);
+            if ($this->visibility === 'public') {
+                $this->getDisk()->setVisibility($path, 'public');
+            }
+            fclose($stream);
         }
 
         $file->delete();
