@@ -61,8 +61,8 @@ trait CanMoveFiles
             $stream = $file->readStream();
             $path = $this->getDirectory() . '/' . "{$basename}.{$extension}";
             $this->getDisk()->writeStream($path, $stream);
-            if ($this->visibility === 'public') {
-                $this->getDisk()->setVisibility($path, 'public');
+            if ($this->visibility === 'public' || $this->visibility === 'private') {
+                $this->getDisk()->setVisibility($path, $this->visibility);
             }
             fclose($stream);
         }
