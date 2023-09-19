@@ -23,30 +23,36 @@ export default function apsonexSimpleFileField(state, args) {
         disabled: false,
         progress: 0,
         processing: false,
-        img: { src: null, urlPrefix: null, dataUri: false },
-        get imgSrc() {
-            if (this.img.src && !this.img.dataUri) {
-                return this.img.urlPrefix + this.img.src;
-            }
-
-            if (this.img.src && this.img.dataUri) {
-                return this.img.src;
-            }
-
-            return null;
-        },
+        img: { src: null, key: null, blob: null },
+        fileKeyIndex: {},
         init() {
             this.id = args.id;
             this.statePath = args.statePath;
             this.disabled = args.disabled;
             this.wire = args.$wire;
             this.state = state;
-            this.img.src = state.initialValue;
-            this.img.urlPrefix = args.urlPrefix;
+            this.getFiles();
+        },
+        async getFiles() {
+            this.processing = true;
+            // https://github.com/filamentphp/filament/blob/3.x/packages/forms/resources/views/components/file-upload.blade.php
+            // https://github.com/filamentphp/filament/blob/3.x/packages/forms/resources/js/components/file-upload.js#L118
+            let uploadedFiles = await args.getFormUploadedFiles();
+            this.fileKeyIndex = uploadedFiles ?? {}
+            this.img.key = Object.keys(this.fileKeyIndex)[0];
+            this.img.src = this.img.key ? this.fileKeyIndex[this.img.key].url : null;
+            this.processing = false;
         },
         async deleteFile() {
-            this.img.src = null
-            await this.$wire.$set(this.statePath, null);
+            this.img.blob = null;
+
+            if (!this.img.key) {
+                return;
+            }
+
+            await args.deleteUploadedFileUsing(this.img.key);
+            this.img.src = null;
+            this.img.key = null;
         },
         uploadFile($event) {
             this.processing = true;
@@ -55,12 +61,24 @@ export default function apsonexSimpleFileField(state, args) {
             this.readFile(
                 $event.target.files[0],
                 (async (file, blob) => {
-                    await this.$wire.upload(
-                        this.statePath,
+                    let fileKey = randomName();
+                    this.processing = true;
+
+                    this.img.blob = blob;
+
+                    await args.uploadUsing(
+                        fileKey,
                         file,
-                        (uploadedFileName) => this.uploadSuccess(blob, uploadedFileName),
-                        (err) => { this.processing = false, this.progress = 0 },
-                        (event) => this.progress = event.detail.progress,
+                        (fileKey) => {
+                            this.processing = false;
+                            this.img.key = fileKey;
+                        },
+                        (err) => {
+                            console.log(err);
+                        },
+                        ($progressEvent) => {
+                            console.log($progressEvent);
+                        }
                     )
                 }).bind(this)
             )

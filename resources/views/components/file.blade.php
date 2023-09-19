@@ -1,5 +1,5 @@
 @php
-    use \Apsonex\FilamentSimpleFile\FilamentSimpleFileServiceProvider;
+    use Apsonex\FilamentSimpleFile\FilamentSimpleFileServiceProvider;
     $id = $getId();
     $isConcealed = $isConcealed();
     $isDisabled = $isDisabled();
@@ -25,7 +25,18 @@
                 disabled: {{ $isDisabled ? 'true' : 'false' }},
                 id: '{{ $id }}',
                 statePath: '{{ $statePath }}',
-                urlPrefix: '{{ $getUrlPrefix() }}',
+                getFormUploadedFiles: async () => await $wire.getFormUploadedFiles(@js($statePath)),
+                uploadUsing: (fileKey, file, success, error, progress) => {
+                    $wire.upload(
+                        `{{ $statePath }}.${fileKey}`,
+                        file,
+                        () => success(fileKey),
+                        error,
+                        (progressEvent) => progress(true, progressEvent.detail.progress, 100),
+                    )
+                },
+                deleteUploadedFileUsing: async (fileKey) => await $wire.deleteUploadedFile(@js($statePath), fileKey),
+                removeUploadedFileUsing: async (fileKey) => await $wire.removeFormUploadedFile(@js($statePath), fileKey),
                 state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
                 maxSize: @js(($size = $getMaxSize()) ? "'{$size} KB'" : null),
                 minSize: @js(($size = $getMinSize()) ? "'{$size} KB'" : null),
@@ -36,12 +47,12 @@
             class="relative flex flex-col flex-wrap"
             x-cloak
         >
-            <template x-if="img.src">
+            <template x-if="img.blob || img.src">
                 <div class="relative flex w-full">
                     <div
                         class="w-full flex aspect-square relative border shadow rounded-lg overflow-hidden min-h-[100px]">
                         <img
-                            x-bind:src="imgSrc"
+                            x-bind:src="img.blob || img.src"
                             class="object-contain w-full h-auto max-w-full"
                         />
                     </div>
@@ -53,7 +64,7 @@
                 </div>
             </template>
 
-            <template x-if="!img.src">
+            <template x-if="!img.src && !img.blob">
                 <div class="">
                     <button
                         type="button"

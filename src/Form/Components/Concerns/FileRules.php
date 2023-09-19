@@ -141,6 +141,38 @@ trait FileRules
 
     public function getValidationRules(): array
     {
-        return $this->getFileValidationRules();
+        $rules = [
+            $this->getRequiredValidationRule(),
+            'array'
+        ];
+
+        // if (filled($count = $this->getMaxFiles())) {
+        //     $rules[] = "max:{$count}";
+        // }
+
+        // if (filled($count = $this->getMinFiles())) {
+        //     $rules[] = "min:{$count}";
+        // }
+
+        $rules[] = function (string $attribute, array $value, Closure $fail): void {
+            $files = array_filter($value, fn (TemporaryUploadedFile | string $file): bool => $file instanceof TemporaryUploadedFile);
+
+            $name = $this->getName();
+
+            $validator = Validator::make(
+                [$name => $files],
+                ["{$name}.*" => ['file', ...parent::getValidationRules()]],
+                [],
+                ["{$name}.*" => $this->getValidationAttribute()],
+            );
+
+            if (!$validator->fails()) {
+                return;
+            }
+
+            $fail($validator->errors()->first());
+        };
+
+        return $rules;
     }
 }
