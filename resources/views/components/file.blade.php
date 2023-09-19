@@ -1,7 +1,6 @@
 @php
     use Apsonex\FilamentSimpleFile\FilamentSimpleFileServiceProvider;
     $id = $getId();
-    $isConcealed = $isConcealed();
     $isDisabled = $isDisabled();
     $statePath = $getStatePath();
     $acceptedFileTypes = $getAcceptedFileTypes();
