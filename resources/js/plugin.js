@@ -74,7 +74,7 @@ export default function apsonexSimpleFileField(state, args) {
                             this.img.key = fileKey;
                         },
                         (err) => {
-                            console.log(err);
+                            console.log('error: ' + err);
                         },
                         ($progressEvent) => {
                             console.log($progressEvent);
