@@ -17,7 +17,6 @@
     ],
     "require": {
         "php": "^8.2",
-        "apsonex/filament-asset-routing": "^1.0",
         "enshrined/svg-sanitize": "^0.16.0",
         "filament/filament": "^3.0",
         "illuminate/contracts": "^9.0|^10.0",
