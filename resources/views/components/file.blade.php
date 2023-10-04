@@ -2,8 +2,10 @@
     use Apsonex\FilamentSimpleFile\FilamentSimpleFileServiceProvider;
     $id = $getId();
     $isDisabled = $isDisabled();
-    $statePath = $getStatePath();
+    $statePath = $getStatePath(true);
     $acceptedFileTypes = $getAcceptedFileTypes();
+    $maxSize = $getMaxSize() ?: 'null';
+    $minSize = $getMinSize() ?: 'null';
 @endphp
 
 <x-dynamic-component
@@ -12,14 +14,15 @@
 >
     <div
         x-ignore
-        class=""
-        x-load-css="[
-            @js(filament_asset_route('resources/dist/plugin.css', FilamentSimpleFileServiceProvider::class)),
-        ]"
         ax-load
-        ax-load-src="{{ filament_asset_route('resources/dist/plugin.js', FilamentSimpleFileServiceProvider::class) }}"
+        ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('filament-simple-file-js-plugin', 'apsonex/filament-simple-file') }}{{ app()->environment('local') ? '&cache=' . now()->getTimestamp() : '' }}"
+        x-load-css="[
+            '{{ \Filament\Support\Facades\FilamentAsset::getStyleHref('filament-simple-file-css-plugin', 'apsonex/filament-simple-file') }}{{ app()->environment('local') ? '&cache=' . now()->getTimestamp() : '' }}'
+        ]"
+        {{-- ax-load-src="{{ filament_asset_route('resources/dist/plugin.js', FilamentSimpleFileServiceProvider::class) }}" --}}
         x-data="apsonexSimpleFileField(
-            $wire.{{ $applyStateBindingModifiers("entangle('{$getStatePath()}')") }}, {
+            $wire.$entangle('{{ $statePath }}'),
+            {
                 $wire: $wire,
                 disabled: {{ $isDisabled ? 'true' : 'false' }},
                 id: '{{ $id }}',
@@ -36,9 +39,9 @@
                 },
                 deleteUploadedFileUsing: async (fileKey) => await $wire.deleteUploadedFile(@js($statePath), fileKey),
                 removeUploadedFileUsing: async (fileKey) => await $wire.removeFormUploadedFile(@js($statePath), fileKey),
-                state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
-                maxSize: @js(($size = $getMaxSize()) ? "'{$size} KB'" : null),
-                minSize: @js(($size = $getMinSize()) ? "'{$size} KB'" : null),
+                state: $wire.$entangle('{{ $statePath }}'),
+                maxSize: {{ $maxSize }},
+                minSize: {{ $minSize }},
             }
         )"
     >
