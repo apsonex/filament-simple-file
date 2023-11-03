@@ -5,6 +5,7 @@ namespace Apsonex\FilamentSimpleFile\Form\Components;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Renderless;
 use Filament\Forms\Components\Concerns;
 use Illuminate\Support\Facades\Storage;
 use Filament\Support\Concerns\HasAlignment;
@@ -70,5 +71,15 @@ class File extends BaseFileUpload
     public function multiple(bool|Closure $condition = true): static
     {
         return $this;
+    }
+
+    public function getUploadedFile(string $statePath): ?array
+    {
+        $path = Arr::get($this->getLivewire()->data, str($statePath)->replaceFirst('data.', '')->toString());
+
+        if (empty($path)) return [];
+
+        return collect($path)
+            ->mapWithKeys(fn ($v, $k) => [$k => ['url' => $this->getDisk()->url($v)]])->toArray();
     }
 }
