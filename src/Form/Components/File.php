@@ -82,4 +82,34 @@ class File extends BaseFileUpload
         return collect($path)
             ->mapWithKeys(fn ($v, $k) => [$k => ['url' => $this->getDisk()->url($v)]])->toArray();
     }
+
+    
+    public function removeUploadedFile(string $fileKey): string | TemporaryUploadedFile | null
+    {
+        $files = $this->getState();
+
+        if(is_string($files)) {
+            $file = $files;
+        } else {
+            $file = $files[$fileKey] ?? null;
+        }
+
+        if (! $file) {
+            return null;
+        }
+
+        if (is_string($file)) {
+            $this->removeStoredFileName($file);
+        } elseif ($file instanceof TemporaryUploadedFile) {
+            $file->delete();
+        }
+
+        if(!is_string($files)) {
+            unset($files[$fileKey]);
+        }
+
+        $this->state([]);
+
+        return $file;
+    }
 }
