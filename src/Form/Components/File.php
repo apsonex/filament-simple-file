@@ -99,7 +99,7 @@ class File extends BaseFileUpload
         }
 
         if (is_string($file)) {
-            $this->removeStoredFileName($file);
+            $this->getDisk()->delete($file);
         } elseif ($file instanceof TemporaryUploadedFile) {
             $file->delete();
         }
