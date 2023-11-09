@@ -112,4 +112,16 @@ class File extends BaseFileUpload
 
         return $file;
     }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getValidationRules(): array
+    {
+        $hasUploadedFiles = array_filter(Arr::wrap($this->getState()), fn (TemporaryUploadedFile | string $file): bool => $file instanceof TemporaryUploadedFile);
+
+        if (empty($hasUploadedFiles)) return [];
+
+        return parent::getValidationRules();
+    }
 }
