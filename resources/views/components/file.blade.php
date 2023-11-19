@@ -7,6 +7,8 @@
     $maxSize = $getMaxSize() ?: 'null';
     $minSize = $getMinSize() ?: 'null';
     $uploadedFile = $getUploadedFile($statePath) ?: [];
+    $imageHeight = $getImageHeight() ?: null;
+    $aspectVideoView = $getAspectVideoView() ?: null;
 @endphp
 
 <x-dynamic-component
@@ -15,12 +17,8 @@
 >
     <div
         wire:ignore
-        x-ignore
-        ax-load
-        x-load-css="[
-            '{{ \Filament\Support\Facades\FilamentAsset::getStyleHref('filament-simple-file-css-plugin', 'apsonex/filament-simple-file') }}{{ app()->environment('local') ? '&cache=' . now()->getTimestamp() : '' }}'
-        ]"
         x-data="{
+            css: '{{ \Filament\Support\Facades\FilamentAsset::getStyleHref('filament-simple-file-css-plugin', 'apsonex/filament-simple-file') }}{{ app()->environment('local') ? '&cache=' . now()->getTimestamp() : '' }}',
             randomName: () => ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16), ),
             id: '{{ $id }}',
             statePath: '{{ $statePath }}',
@@ -46,7 +44,19 @@
             img: { src: null, key: null, blob: null },
             uploadedFiles: {},
             disabled: {{ $isDisabled ? 'true' : 'false' }},
+            imageHeight: {{ $imageHeight ? $imageHeight : 'null' }},
+            addCss() {
+                if (document.querySelector(`link[href='${this.css}']`)) {
+                    return;
+                }
+                const link = document.createElement('link')
+                link.type = 'text/css';
+                link.rel = 'stylesheet';
+                link.href = this.css;
+                document.head.prepend(link);
+            },
             init() {
+                this.addCss();
                 this.getFiles();
             },
             get hasImage() {
@@ -62,20 +72,21 @@
                 // https://github.com/filamentphp/filament/blob/3.x/packages/forms/resources/views/components/file-upload.blade.php
                 // https://github.com/filamentphp/filament/blob/3.x/packages/forms/resources/js/components/file-upload.js#L118
                 this.uploadedFiles = @js($uploadedFile);
-                this.key = Object.keys(this.uploadedFiles)[0];
-                if (this.key) {
-                    this.img.src = this.uploadedFiles[this.key].url;
+                this.img.key = Object.keys(this.uploadedFiles)[0];
+                if (this.img.key) {
+                    this.img.src = this.uploadedFiles[this.img.key].url;
                 }
                 this.processing = false;
             },
             async deleteFile() {
                 this.img.blob = null;
-                if (!this.key) {
+
+                if (!this.img.key) {
                     return;
                 }
-                await this.deleteUploadedFileUsing(this.key);
+                await this.deleteUploadedFileUsing(this.img.key);
                 this.img.src = null;
-                this.key = null;
+                this.img.key = null;
             },
             readFile(file, onSuccess) {
                 var reader = new FileReader();
@@ -99,7 +110,7 @@
                             file,
                             (fileKey) => {
                                 this.processing = false;
-                                this.key = fileKey;
+                                this.img.key = fileKey;
                             },
                             (err) => {
                                 console.log('error: ' + err);
@@ -111,32 +122,53 @@
                     }).bind(this)
                 )
             },
-            {{-- uploadSuccess(blob, fileName) {
-                this.img.dataUri = true;
-                this.img.src = blob;
-                this.processing = false;
-            }, --}}
+            imageUpdated($event) {
+                if (!$event.detail.data[this.statePath]) return;
+
+                let imageHeight = $event.detail.data[this.statePath].imageHeight;
+
+                if (imageHeight) {
+                    this.imageHeight = parseInt(imageHeight);
+                }
+            }
         }"
+        x-on:simpl-image-file-updated.window="imageUpdated"
     >
         <div
             class="relative flex flex-col flex-wrap"
             x-cloak
         >
             <div
-                class="relative flex w-full"
+                class="relative flex flex-col items-start w-full"
                 x-show="hasImage"
             >
-                <div class="w-full flex aspect-square relative border shadow rounded-lg overflow-hidden min-h-[100px]">
+                <div
+                    class="relative flex w-full overflow-hidden border rounded-lg shadow"
+                    x-bind:class="{
+                        '{{ $aspectVideoView ? 'aspect-video' : 'aspect-square' }} min-h-[100px]': !imageHeight,
+                    }"
+                    x-bind:style="{
+                        maxWidth: '400px',
+                    }"
+                >
                     <img
                         x-bind:src="imageSrc"
                         class="object-contain w-full h-auto max-w-full"
+                        x-bind:style="{
+                            height: imageHeight ? imageHeight + 'px' : 'auto',
+                        }"
                     />
                 </div>
+
                 <button
                     @click.prevent="deleteFile(img.key)"
                     type="button"
-                    class="absolute top-0 right-0 z-10 w-8 h-8 p-1 mt-2 mr-2 text-xs font-semibold text-red-500 bg-white border border-gray-200 rounded-full shadow hover:text-primary-500 hover:bg-gray-200"
-                ><x-heroicon-o-trash class="w-full h-full" /></button>
+                    {{-- class="absolute top-0 right-0 z-10 w-8 h-8 p-1 mt-2 mr-2 text-xs font-semibold text-red-500 bg-white border border-gray-200 rounded-full shadow hover:text-primary-500 hover:bg-gray-200" --}}
+                    class="z-10 flex items-center mt-1 text-xs font-medium text-danger-500"
+                >
+                    <x-heroicon-o-trash class="w-4 h-4 mr-0.5" />
+                    <span class="">Delete</span>
+                </button>
             </div>
 
             <div

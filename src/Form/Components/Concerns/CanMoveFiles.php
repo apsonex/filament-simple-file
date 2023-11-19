@@ -33,37 +33,42 @@ trait CanMoveFiles
 
         $extension = (new MimeTypes())->getExtensions($file->getMimeType())[0] ?? 'png';
 
-        $method = $this->visibility === 'public' ? 'storePubliclyAs' : 'storeAs';
-
         $directory = $this->getDirectory();
 
         $mime = $file->getMimeType();
 
         if ($mime === 'image/svg+xml') {
-            $options = [
-                'Content-type' => $mime
-            ];
+            $options = ['Content-type' => $mime];
+
             if ($this->visibility === 'public') {
                 $options['visibility'] = 'public';
             }
 
             $temporaryDirectory = (new TemporaryDirectory())->create();
+
             $tempPath = $temporaryDirectory->path(Str::random() . '.' . $extension);
+
             File::put($tempPath, SVG::sanitize($file->get()));
+
             $this->getDisk()->putFileAs(
                 $this->getDirectory(),
                 new HttpFile($tempPath),
                 "{$basename}.{$extension}",
                 $options
             );
+
             $temporaryDirectory->delete();
         } else {
             $stream = $file->readStream();
+
             $path = $this->getDirectory() . '/' . "{$basename}.{$extension}";
+
             $this->getDisk()->writeStream($path, $stream);
+
             if ($this->visibility === 'public' || $this->visibility === 'private') {
                 $this->getDisk()->setVisibility($path, $this->visibility);
             }
+
             fclose($stream);
         }
 

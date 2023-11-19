@@ -30,7 +30,7 @@ class FilamentSimpleFileServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         FilamentAsset::register([
-            AlpineComponent::make(id:'filament-simple-file-js-plugin', path:__DIR__ . '/../resources/dist/plugin.js')->loadedOnRequest(),
+            // AlpineComponent::make(id:'filament-simple-file-js-plugin', path:__DIR__ . '/../resources/dist/plugin.js')->loadedOnRequest(),
             Css::make(id:'filament-simple-file-css-plugin', path:__DIR__ . '/../resources/dist/plugin.css')->loadedOnRequest(),
         ], static::PACKAGE_NAME);
     }

@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "dev:css": "npx tailwindcss -i resources/scss/plugin.scss -o resources/dist/plugin.css --postcss --watch",
+    "dev:css": "npx tailwindcss -i resources/css/plugin.css -o resources/dist/plugin.css --postcss --watch",
     "dev:js": "node bin/build.js --dev",
-    "build:css": "npx tailwindcss -i resources/scss/plugin.scss -o resources/dist/plugin.css --postcss --minify && npm run purge",
+    "build:css": "npx tailwindcss -i resources/css/plugin.css -o resources/dist/plugin.css --postcss --minify && npm run purge",
     "build:js": "node bin/build.js",
     "purge": "filament-purge -i resources/dist/plugin.css -o resources/dist/plugin.css -v 3.x",
     "dev": "npm-run-all --parallel dev:*",

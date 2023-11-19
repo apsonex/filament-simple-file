@@ -1,5 +1,5 @@
 module.exports = {
-    syntax: 'postcss-scss',
+    // syntax: 'postcss-scss',
     plugins: {
       'postcss-import': {},
       'tailwindcss/nesting': {},
@@ -7,4 +7,3 @@ module.exports = {
       autoprefixer: {},
     },
   };
-  
